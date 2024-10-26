@@ -1,0 +1,1094 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "<playMeda backend />",
+    "description": "a simple backend for a computer shop.",
+    "version": "1.0.0"
+  },
+  "components": {
+    "securitySchemes": {
+      "Authorization": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "schema": "bearer",
+        "in": "header",
+        "description": "its a bearer token for user. ** [bearer token] **"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "auth routes."
+    },
+    {
+      "name": "User",
+      "description": "users routes."
+    },
+    {
+      "name": "Order",
+      "description": "orders routes."
+    },
+    {
+      "name": "Product",
+      "description": "product routes."
+    },
+    {
+      "name": "Comment",
+      "description": "comment routes."
+    },
+    {
+      "name": "Categories",
+      "description": "categories routes."
+    },
+    {
+      "name": "Contacts",
+      "description": "contacts routes."
+    }
+  ],
+  "paths": {
+    "/v1/auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "register a auth.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "fullname": "john smith",
+                  "username": "mr_smith",
+                  "email": "john@gmail.com",
+                  "phone": "09121234567",
+                  "password": "12345678",
+                  "confirmPassword": "12345678"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "done."
+          },
+          "406": {
+            "description": "user already exist."
+          },
+          "401": {
+            "description": "you are unauthorized."
+          },
+          "500": {
+            "description": "internal server error."
+          }
+        }
+      }
+    },
+    "/v1/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "this route use for user login.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "username": "mr_smith",
+                  "password": "12345678"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "done."
+          },
+          "404": {
+            "description": "user not found."
+          },
+          "401": {
+            "description": "you are unauthorized.."
+          },
+          "500": {
+            "description": "internal server error."
+          }
+        }
+      }
+    },
+    "/v1/user/": {
+      "get": {
+        "tags": ["User"],
+        "summary": "get all users.",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "done."
+          },
+          "401": {
+            "description": "you are unauthorized."
+          },
+          "403": {
+            "description": "you are not admin or boss."
+          },
+          "500": {
+            "description": "internal server error."
+          }
+        }
+      }
+    },
+    "/v1/user/getme": {
+      "get": {
+        "tags": ["User"],
+        "summary": "this route use for get user.",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "done."
+          },
+          "404": {
+            "description": "user not found."
+          },
+          "401": {
+            "description": "you are unauthorized."
+          },
+          "403": {
+            "description": "you are not admin or boss."
+          },
+          "500": {
+            "description": "internal server error."
+          }
+        }
+      }
+    },
+    "/v1/user/ban/{id}": {
+      "delete": {
+        "tags": ["User"],
+        "summary": "this route use for ban user.",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "done."
+          },
+          "401": {
+            "description": "you are unauthorized."
+          },
+          "403": {
+            "description": "you are not admin or boss."
+          },
+          "404": {
+            "description": "user not found."
+          },
+          "500": {
+            "description": "internal server error."
+          }
+        }
+      }
+    },
+    "/v1/user/remove/{id}": {
+      "delete": {
+        "tags": ["User"],
+        "summary": "this route use for remove user.",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "done."
+          },
+          "401": {
+            "description": "you are unauthorized."
+          },
+          "403": {
+            "description": "you are not admin or boss."
+          },
+          "404": {
+            "description": "user not found."
+          },
+          "500": {
+            "description": "internal server error."
+          }
+        }
+      }
+    },
+    "/v1/user/change-role/{id}": {
+      "put": {
+        "tags": ["User"],
+        "summary": "this route use for make user admin.",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "done."
+          },
+          "401": {
+            "description": "you are unauthorized."
+          },
+          "403": {
+            "description": "you are not the boss."
+          },
+          "404": {
+            "description": "user not found."
+          },
+          "500": {
+            "description": "internal server error."
+          }
+        }
+      }
+    },
+    "/v1/order": {
+      "get": {
+        "tags": ["User", "Order"],
+        "summary": "get all orders.",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "done."
+          },
+          "401": {
+            "description": "you are unauthorized."
+          },
+          "403": {
+            "description": "you are not admin or boss."
+          },
+          "500": {
+            "description": "internal server error."
+          }
+        }
+      }
+    },
+    "/v1/order/most-sale": {
+      "get": {
+        "tags": ["User", "Order"],
+        "summary": "get all orders.",
+        "responses": {
+          "200": {
+            "description": "done."
+          },
+          "500": {
+            "description": "internal server error."
+          }
+        }
+      }
+    },
+    "/v1/buy/{productID}": {
+      "post": {
+        "tags": ["Order"],
+        "summary": "create new order.",
+        "parameters": [
+          {
+            "name": "productID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "done."
+          },
+          "401": {
+            "description": "you are unauthorized."
+          },
+          "404": {
+            "description": "product not found."
+          },
+          "405": {
+            "description": "product finished."
+          },
+          "500": {
+            "description": "internal server error."
+          }
+        }
+      }
+    },
+    "/v1/product": {
+      "get": {
+        "tags": ["Product"],
+        "summary": "get all products.",
+        "responses": {
+          "200": {
+            "description": "done."
+          },
+          "406": {
+            "description": "user already exist."
+          },
+          "500": {
+            "description": "internal server error."
+          }
+        }
+      }
+    },
+    "/v1/product/{id}": {
+      "get": {
+        "tags": ["Product"],
+        "summary": "get single product data.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "here is post."
+          },
+          "404": {
+            "description": "post found."
+          },
+          "500": {
+            "description": "internal server error."
+          }
+        }
+      }
+    },
+    "/v1/product/add": {
+      "post": {
+        "tags": ["Product"],
+        "summary": "add new product.",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "The name of the product."
+                  },
+                  "model": {
+                    "type": "string",
+                    "description": "The model of the product."
+                  },
+                  "brand": {
+                    "type": "string",
+                    "description": "The brand of the product."
+                  },
+                  "subCategory": {
+                    "type": "string",
+                    "description": "The id of the sub category."
+                  },
+                  "isProductNew": {
+                    "type": "number",
+                    "description": "if product is new send 1 else 0.",
+                    "minimum": 0,
+                    "maximum": 1
+                  },
+                  "pics": {
+                    "type": "array",
+                    "items": {
+                      "type": "file",
+                      "description": "array of pic url address."
+                    }
+                  },
+                  "count": {
+                    "type": "number",
+                    "description": "number of products.",
+                    "minimum": 0
+                  },
+                  "off": {
+                    "type": "number",
+                    "description": "between 0 to 100.",
+                    "minimum": 0,
+                    "maximum": 100
+                  },
+                  "price": {
+                    "type": "number",
+                    "description": "The price of the product.",
+                    "minimum": 0
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "A brief description of the product."
+                  }
+                },
+                "required": [
+                  "name",
+                  "model",
+                  "brand",
+                  "isProductNew",
+                  "count",
+                  "off",
+                  "price",
+                  "description",
+                  "warranty",
+                  "subCategory"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "done."
+          },
+          "401": {
+            "description": "you are unauthorized."
+          },
+          "403": {
+            "description": "you are not admin or boss."
+          },
+          "404": {
+            "description": "admin or category not found."
+          },
+          "405": {
+            "description": "field name already exist."
+          },
+          "500": {
+            "description": "internal server error."
+          }
+        }
+      }
+    },
+    "/v1/product/remove/{id}": {
+      "delete": {
+        "tags": ["Product"],
+        "summary": "remove single product.",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "done."
+          },
+          "401": {
+            "description": "you are unauthorized."
+          },
+          "403": {
+            "description": "you are not admin or boss."
+          },
+          "404": {
+            "description": "product dose not exist."
+          },
+          "500": {
+            "description": "internal server error."
+          }
+        }
+      }
+    },
+    "/v1/product/update/{id}": {
+      "put": {
+        "tags": ["Product"],
+        "summary": "update a product.",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "done."
+          },
+          "401": {
+            "description": "you are unauthorized."
+          },
+          "403": {
+            "description": "you are not admin or boss."
+          },
+          "405": {
+            "description": "field name already exist."
+          },
+          "500": {
+            "description": "internal server error."
+          }
+        }
+      }
+    },
+    "/v1/product/cat/{href}": {
+      "get": {
+        "tags": ["Product", "Categories"],
+        "summary": "get all products of a category.",
+        "parameters": [
+          {
+            "name": "href",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "done."
+          },
+          "404": {
+            "description": "category dose not exist."
+          },
+          "500": {
+            "description": "internal server error."
+          }
+        }
+      }
+    },
+    "/v1/comment": {
+      "get": {
+        "tags": ["Comment"],
+        "summary": "get all comments.",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "done."
+          },
+          "401": {
+            "description": "you are unauthorized."
+          },
+          "403": {
+            "description": "you are not admin or boss."
+          },
+          "500": {
+            "description": "internal server error."
+          }
+        }
+      }
+    },
+    "/v1/comment/user-comments": {
+      "get": {
+        "tags": ["Comment"],
+        "summary": "get all comments of current visitor all user.",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "done."
+          },
+          "401": {
+            "description": "you are unauthorized."
+          },
+          "403": {
+            "description": "you are not admin or boss."
+          },
+          "500": {
+            "description": "internal server error."
+          }
+        }
+      }
+    },
+    "/v1/comment/{productID}": {
+      "get": {
+        "tags": ["Comment"],
+        "summary": "get all comments of one product.",
+        "parameters": [
+          {
+            "name": "productID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "done."
+          },
+          "401": {
+            "description": "you are unauthorized."
+          },
+          "403": {
+            "description": "you are not admin or boss."
+          },
+          "500": {
+            "description": "internal server error."
+          }
+        }
+      },
+      "post": {
+        "tags": ["Comment"],
+        "summary": "create comment under a post.",
+        "parameters": [
+          {
+            "name": "productID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "body": "this test comment",
+                  "score": 5
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "done."
+          },
+          "401": {
+            "description": "you are unauthorized."
+          },
+          "500": {
+            "description": "internal server error."
+          }
+        }
+      }
+    },
+    "/v1/comment/reply/{commentID}": {
+      "post": {
+        "tags": ["Comment"],
+        "summary": "reply on a comment.",
+        "parameters": [
+          {
+            "name": "commentID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "body": "this test comment"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "done."
+          },
+          "401": {
+            "description": "you are unauthorized."
+          },
+          "404": {
+            "description": "replied comment or user not found."
+          },
+          "500": {
+            "description": "internal server error."
+          }
+        }
+      }
+    },
+    "/v1/comment/remove": {
+      "delete": {
+        "tags": ["Comment"],
+        "summary": "remove a comment.",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "mainCommentID": "66bcd2a787bd397f78ebd3d7",
+                  "commentID": "66bcd2a787bd397f78ebd3d7"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "done."
+          },
+          "401": {
+            "description": "you are unauthorized."
+          },
+          "403": {
+            "description": "you are not admin or boss."
+          },
+          "404": {
+            "description": "the comment or main comment not found"
+          },
+          "500": {
+            "description": "internal server error."
+          }
+        }
+      }
+    },
+    "/v1/comment/accept": {
+      "put": {
+        "tags": ["Comment"],
+        "summary": "remove a comment.",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "mainCommentID": "66bcd2a787bd397f78ebd3d7",
+                  "commentID": "66bcd2a787bd397f78ebd3d7"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "done."
+          },
+          "401": {
+            "description": "you are unauthorized."
+          },
+          "403": {
+            "description": "you are not admin or boss."
+          },
+          "404": {
+            "description": "the comment or main comment not found"
+          },
+          "500": {
+            "description": "internal server error."
+          }
+        }
+      }
+    },
+    "/v1/category": {
+      "get": {
+        "tags": ["Categories"],
+        "summary": "get all categories.",
+        "responses": {
+          "200": {
+            "description": "done."
+          },
+          "500": {
+            "description": "internal server error."
+          }
+        }
+      },
+      "post": {
+        "tags": ["Categories"],
+        "summary": "get all categories.",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "name": "pc",
+                  "href": "pc"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "done."
+          },
+          "500": {
+            "description": "internal server error."
+          }
+        }
+      }
+    },
+    "/v1/category/{categoryID}": {
+      "delete": {
+        "tags": ["Categories"],
+        "summary": "remove a categories.",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "categoryID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "done."
+          },
+          "404": {
+            "description": "category dose not exist."
+          },
+          "500": {
+            "description": "internal server error."
+          }
+        }
+      }
+    },
+    "/v1/contact": {
+      "get": {
+        "tags": ["Contacts"],
+        "summary": "get all contacts.",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "done."
+          },
+          "401": {
+            "description": "you are unauthorized."
+          },
+          "403": {
+            "description": "you are not admin or boss."
+          },
+          "500": {
+            "description": "internal server error."
+          }
+        }
+      },
+      "post": {
+        "tags": ["Contacts"],
+        "summary": "get all contacts.",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "fullname": "mr smith",
+                  "issue": "nothin",
+                  "phone": "09121234567",
+                  "email": "smith@gmail.com",
+                  "explain": "hello world."
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "done."
+          },
+          "401": {
+            "description": "you are unauthorized."
+          },
+          "403": {
+            "description": "you are not admin or boss."
+          },
+          "500": {
+            "description": "internal server error."
+          }
+        }
+      }
+    },
+    "/v1/contact/no-answer": {
+      "get": {
+        "tags": ["Contacts"],
+        "summary": "get all no answer contacts.",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "done."
+          },
+          "401": {
+            "description": "you are unauthorized."
+          },
+          "403": {
+            "description": "you are not admin or boss."
+          },
+          "500": {
+            "description": "internal server error."
+          }
+        }
+      }
+    },
+    "/v1/contact/{contactID}": {
+      "delete": {
+        "tags": ["Contacts"],
+        "summary": "answer a contact.",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "contactID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "done."
+          },
+          "401": {
+            "description": "you are unauthorized."
+          },
+          "403": {
+            "description": "you are not admin or boss."
+          },
+          "404": {
+            "description": "contact not found."
+          },
+          "500": {
+            "description": "internal server error."
+          }
+        }
+      },
+      "put": {
+        "tags": ["Product"],
+        "summary": "answer a contact.",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "contactID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "answer": "this test answer"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "done."
+          },
+          "400": {
+            "description": "validation faild."
+          },
+          "401": {
+            "description": "you are unauthorized."
+          },
+          "403": {
+            "description": "you are not admin or boss."
+          },
+          "404": {
+            "description": "contact not found."
+          },
+          "500": {
+            "description": "internal server error."
+          }
+        }
+      }
+    }
+  }
+}
